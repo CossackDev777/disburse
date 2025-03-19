@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # React frontend service
+  frontend:
+    build:
+      context: ./fe  # Path to the root folder containing the Dockerfile for frontend
+      dockerfile: Dockerfile  # Update if using a different file name
+    # No need to expose port 80 for the frontend, Apache will proxy requests
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend  # Wait for the backend service to be ready
+
+  # Spring Boot backend service
+  backend:
+    build:
+      context: ./be  # Path to the root folder containing the Dockerfile for backend
+      dockerfile: Dockerfile  # Update if using a different file name
+    ports:
+      - "8080:8080"  # Map container port 8000 to host port 8000 (Apache proxies here)
+    networks:
+      - app-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+networks:
+  app-network:
+    driver: bridge
