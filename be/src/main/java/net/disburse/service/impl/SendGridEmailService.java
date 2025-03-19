@@ -15,22 +15,26 @@ import java.io.IOException;
 @Service
 public class SendGridEmailService {
     private final SendGrid sendGrid;
+    private final String displayName;
+    private final String fromEmail;
 
-    @Value("${sendgrid.default.displayName}")
-    private String displayName;
+    public SendGridEmailService(
+            @Value("${sendgrid.api.key}") String apiKey,
+            @Value("${sendgrid.default.displayName}") String displayName,
+            @Value("${sendgrid.default.fromEmail}") String fromEmail) {
+        
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            throw new IllegalStateException("SendGrid API key is missing. Please set 'sendgrid.api.key' in application.properties or as an environment variable.");
+        }
 
-    @Value("${sendgrid.default.fromEmail}")
-    private String fromEmail;
-
-    public SendGridEmailService(@Value("${sendgrid.api.key}") String apiKey) {
         this.sendGrid = new SendGrid(apiKey);
+        this.displayName = displayName;
+        this.fromEmail = fromEmail;
     }
 
     public String sendEmail(String toEmail, String subject, Content content) {
-
         Email from = new Email(this.fromEmail, this.displayName);
         Email to = new Email(toEmail);
-
         Mail mail = new Mail(from, subject, to, content);
 
         Request request = new Request();
@@ -42,8 +46,7 @@ public class SendGridEmailService {
 
             return "Status Code: " + response.getStatusCode() + ", Body: " + response.getBody();
         } catch (IOException ex) {
-            return "Error sending email";
+            return "Error sending email: " + ex.getMessage();
         }
     }
-
 }
