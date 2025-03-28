@@ -88,6 +88,7 @@ const Trusds = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState(""); // "buy" or "redeem"
   const [price, SetPrice] = useState('0');
+  const API_URL = import.meta.env.VITE_APP_API_URL
 
   // Function to open modal and set type
   const openModal = (type: React.SetStateAction<string>) => {
@@ -127,7 +128,7 @@ const Trusds = () => {
         buttonText: "Confirm Redeem",
         action: () => {
           // Send a request to the backend
-          fetch("http://localhost:8080/api/redeem-trusd", {
+          fetch(`${API_URL}/redeem-trusd`, {
             method: "POST",
             headers: { Authorization: `Bearer ${auth_token}`, "Content-Type": "application/json" },
             body: JSON.stringify({

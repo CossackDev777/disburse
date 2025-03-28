@@ -3,6 +3,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, CardElement, CardExpiryElement, CardNumberElement, CardCvcElement } from "@stripe/react-stripe-js";
 import { checkPrime } from "crypto";
 
+const API_URL = import.meta.env.VITE_APP_API_URL
+
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -13,7 +15,7 @@ const PaymentForm = () => {
     setLoading(true);
 
     // Fetch client secret from backend
-    const response = await fetch("http://localhost:8080/api/payment/create-payment-intent", {
+    const response = await fetch(`${API_URL}/payment/create-payment-intent`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: 1000 }), // Amount in cents

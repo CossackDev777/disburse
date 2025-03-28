@@ -140,7 +140,7 @@ export const archivePayout = async (payout_id: number) => {
 
 export const getChains = async () => {
   try {
-    const response = await axios.get(`${API_URL}/chain/all/active`);
+    const response = await axios.get('api/chain/all/active');
     if (response.status == 200) {
       return (response.data as IChain[]) || [];
     } else {

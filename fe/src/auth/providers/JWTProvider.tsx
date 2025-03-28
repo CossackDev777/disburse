@@ -12,7 +12,8 @@ import {
 import * as authHelper from '../_helpers';
 import { type AuthModel, type UserModel } from '@/auth';
 
-const API_URL = import.meta.env.VITE_APP_API_URL;
+//const API_URL = import.meta.env.VITE_APP_API_URL;
+const API_URL = 'http://localhost:8080/api';
 export const LOGIN_URL = `${API_URL}/auth/login`;
 export const REGISTER_URL = `${API_URL}/auth/register`;
 export const REQUEST_EMAIL_URL = `${API_URL}/auth/request-verification-email`;

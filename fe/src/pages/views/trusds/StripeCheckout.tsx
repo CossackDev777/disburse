@@ -14,6 +14,8 @@ const CheckoutForm = ({ onPaymentSuccess }: { onPaymentSuccess: () => void }) =>
     const [zip, setZip] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    const API_URL = import.meta.env.VITE_APP_API_URL
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setLoading(true);
@@ -22,7 +24,7 @@ const CheckoutForm = ({ onPaymentSuccess }: { onPaymentSuccess: () => void }) =>
         const amount = 10; // Example amount in USD
         try {
             // Step 1: Create Payment Intent
-            const response = await fetch("http://localhost:8080/api/payment/create-payment-intent", {
+            const response = await fetch(`${API_URL}/payment/create-payment-intent`, {
                 method: "POST",
                 headers: { Authorization: `Bearer ${auth_token}`, "Content-Type": "application/json" },
                 body: JSON.stringify({ amount, currency: "usd" }),
